@@ -13,28 +13,26 @@
 		<script src="js/app.js"></script>
 
 	</head>
-	<body>
+	<body ng-controller="appCtrl">
 		<div class="container">
 			<div class="panel panel-primary">
 
-				<div class="panel-heading ">
+				<div class="panel-heading">
 			    	<div class="row">
 			        	<div class="col-sm-6">
 			            	<h3 class="panel-title padAdjust">Search Restaurants</h3>
 			            </div>
 			            <div class="col-sm-6">
-			               	<form role="search" method="get" action="/tbl">
 			                   	<div class="input-group">
 			                   		<input type="text" class="form-control" placeholder="ex. 'Pizza Hut' or 'pizza' ">
 			                   		<div class="input-group-btn">
 			                       		<button class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
 			                   		</div>
 			                   	</div>
-			               	</form>
 			          	</div>
 			      	</div>
 			  	</div>
-				<div class="panel-body" ng-controller="mapCtrl">
+				<div class="panel-empty">
 
 					<div id="map"></div>
 
@@ -48,20 +46,20 @@
 			    			<th>Rating</th>
 			    			<th>
 			    				<!--ng-click removeAllBiz-->
-			    				<button ng-click="" class="btn btn-danger pull-right">
+			    				<button ng-click="removeAllBiz()" class="btn btn-danger pull-right">
 			    					<span>CLEAR ALL</span>
 			    				</button>
 			    			</th>
 			    		</tr>
 			    	</thead>
 			    	<tbody>
-			    		<tr><!-- ng-repeat biz in businesses-->
-			    			<td>biz.name</td>
-			    			<td>biz.address</td>
-			    			<td>biz.rating</td>
+			    		<tr ng-repeat="biz in businesses"><!-- ng-repeat biz in businesses-->
+			    			<td>{{biz.name}}</td>
+			    			<td>{{biz.address}}</td>
+			    			<td>{{biz.rating}}</td>
 			    			<td>
 			    				<!--ng-click removeBiz-->
-			    				<button ng-click="" class="btn btn-danger pull-right">
+			    				<button ng-click="removeBiz($index)" class="btn btn-danger pull-right">
 			    					<span class="glyphicon glyphicon-remove"></span>
 			    				</button>
 			    			</td>
