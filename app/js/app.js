@@ -31,11 +31,11 @@ var searchApp = angular.module('searchApp',['leaflet-directive'])
 
 	$scope.searchBiz = function() {
 		//Used for testing first method in getYelp factory
-		//var searchLoc = 'san francisco';
-		//var searchTerm = 'pizza';
-		//$scope.businesses = getYelp(searchLoc, searchTerm);
+		var searchLoc = 'san francisco';
+		var searchTerm = 'pizza';
+		$scope.businesses = getYelp(searchLoc, searchTerm);
 
-		$scope.businesses = getYelp;
+		//$scope.businesses = getYelp;
 		console.log("yelp businesses " + $scope.businesses);
 		
 	};
@@ -83,18 +83,18 @@ http://benalman.com/projects/php-simple-proxy/
 
 .factory('getYelp', function($http) {
 
-
+/*
 	/* First GET method. Returns 'Access-Control-Allow-Origin' error
 
 	return function(location, term) {
 
 		var nonceGen = function() {
-		    var text = "";
-		    var length = 32;
-		    var possible = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-		    for(var i = 0; i < length; i++) {
-		        text += possible.charAt(Math.floor(Math.random() * possible.length));
+		    var text = "",
+		    chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		    for(var i = 0; i < 32; i++) {
+		        text += chars.charAt(Math.floor(Math.random() * chars.length));
 		    }
+		    console.log('nonceGen made ' + text);
 		    return text;
 		};
 
@@ -119,44 +119,49 @@ http://benalman.com/projects/php-simple-proxy/
 		});
 	};
 
+*/
 
 	// Second method also returns 'Access-Control-Allow-Origin' error
-
-	var nonceGen = function() {
-	    var text = "";
-	    var length = 32;
-	    var possible = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	    for(var i = 0; i < length; i++) {
-	        text += possible.charAt(Math.floor(Math.random() * possible.length));
-	    }
-	    return text;
-	};
-		var httpMethod = 'GET',
-		url = 'https://api.yelp.com/v2/search',
-		parameters = {
-			oauth_consumer_key : 'Ux93cMU7JPsfjCuQGYepoQ',
-			oauth_token : 'KktBla6mhLD8qnTAHHnunQDwMH4JQSQN',
-			oauth_nonce : nonceGen(),
-			oauth_timestamp : new Date().getTime(),
-			oauth_signature_method : 'HMAC-SHA1',
-			oath_version : '1.0'
-		},
-		consumerSecret = 'wHXZdnjFXYH00MJfOhPZ7adOMVI',
-		tokenSecret = 'SKevjjJ3z0OVKcAFjgTkd30F1eA',
-		signature = oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret,
-			{ encodeSignature : false});
-		//,
-		//signature = oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret,
-		//	{encodeSignature: false});
-	//parameters['oauth_signature'] = encodedSignature;
-	$http(url, signature)
-	.then(function(response) {
-		var businesses = response;
-		console.log(businesses);	
-	});
-	*/
+	return function(location, term) {
+		var nonceGen = function() {
+		    var text = "";
+		    var length = 32;
+		    var possible = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		    for(var i = 0; i < length; i++) {
+		        text += possible.charAt(Math.floor(Math.random() * possible.length));
+		    }
+		    return text;
+		};
+			var httpMethod = 'JSONP',
+			url = 'https://api.yelp.com/v2/search',
+			parameters = {
+				location : location,
+				term : term,
+				oauth_consumer_key : 'Ux93cMU7JPsfjCuQGYepoQ',
+				oauth_token : 'KktBla6mhLD8qnTAHHnunQDwMH4JQSQN',
+				oauth_nonce : nonceGen(),
+				oauth_timestamp : new Date().getTime(),
+				oauth_signature_method : 'HMAC-SHA1',
+				oath_version : '1.0'
+			},
+			consumerSecret = 'wHXZdnjFXYH00MJfOhPZ7adOMVI',
+			tokenSecret = 'SKevjjJ3z0OVKcAFjgTkd30F1eA',
+			signature = oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret,
+				{ encodeSignature : false});
+			console.log('this signiture is ' + signature);
+			//,
+			//signature = oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret,
+			//	{encodeSignature: false});
+		//parameters['oauth_signature'] = encodedSignature;
+		return $http.get(url, {params : parameters});
+		
+		//.then(function(response) {
+		//	var businesses = response;
+		//	console.log(businesses);	
+		//});
+	}	
 	
-
+/*
 	var businesses = [
 		{
 			name: "Pizza Hut", 
@@ -181,5 +186,7 @@ http://benalman.com/projects/php-simple-proxy/
 		}
 	];
 	return businesses;
-	
+
+*/
+
 });
