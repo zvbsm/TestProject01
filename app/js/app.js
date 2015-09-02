@@ -4,40 +4,48 @@ var searchApp = angular.module('searchApp',['leaflet-directive'])
 
 .controller('appCtrl', function($scope, $http, getYelp) {
 
-	/* Original mapbox leaflet code, will delete if angular leaflet directive works better
-	var map = L.map('map').setView([37.775408,-122.413682], 13);
-	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-	    maxZoom: 18,
-	    id: 'zvbsm.d3e38e55',
-	    accessToken: 'pk.eyJ1IjoienZic20iLCJhIjoiMjJiY2IxNzg4M2YyOTA5OTQ0MjI1ZTkxNWFlM2VlOGYifQ.HVYcYHt5WLqzxf-LQr-86g'
-	}).addTo(map);
-
-		function onMapClick(e) {
-    		console.log(e.latlng);
-		}
-		map.on('click', onMapClick);
-	*/ 
-
-	$scope.removeBiz = function(index) {
-		$scope.businesses.splice(index, 1);
+	var updateMarkers = function() {
+		//I found that 'delete $scope.markers[index]' will delete the marker when added to the removeBiz() function, 
+		//but the remaining markers will not be updated with a new value. Therefore, I'm using angular's forEach() to update the markers 
+		//so their values are current with the remaining businesses listed.
+		var markers = {},
+		index = 0;
+		angular.forEach($scope.businesses, function(value, key) {
+			console.log(key + ':' + value);
+			var name = $scope.businesses[index].name;
+			var thisInd = index;
+			markers[thisInd] = {
+				lat: $scope.businesses[index].lat,
+				lng: $scope.businesses[index].lng,
+				message: name + '<br>' + 'Rating: ' + $scope.businesses[index].rating,
+				focus: false,
+				draggable: false
+			};
+			index++;
+		});
+		$scope.markers = markers;
 	};
+
+
+	$scope.removeBiz = function(index, biz) {
+		delete $scope.markers[index];
+		$scope.businesses.splice(index, 1);
+		updateMarkers();		
+	};
+
 	$scope.removeAllBiz = function() {
 		$scope.businesses.splice(0, $scope.businesses.length);
-
-		console.log('the list of markers' + $scope.marker);
-
+		$scope.markers = {};
 	};
 
 	$scope.searchBiz = function() {
-		//Used for testing first method in getYelp factory
-		var searchLoc = 'san francisco';
-		var searchTerm = 'pizza';
-		$scope.businesses = getYelp(searchLoc, searchTerm);
+		//Used for testing getYelp factory
+		//var searchLoc = 'san francisco';
+		//var searchTerm = 'pizza';
+		//$scope.businesses = getYelp(searchLoc, searchTerm);
 
-		//$scope.businesses = getYelp;
-		console.log("yelp businesses " + $scope.businesses);
-		
+		$scope.businesses = getYelp;
+		updateMarkers();	
 	};
 })
 
@@ -74,13 +82,14 @@ var searchApp = angular.module('searchApp',['leaflet-directive'])
     };
 })
 
+
+
 /*  XMLHttpRequest cannot load https://api.yelp.com/v2/search. No 'Access-Control-Allow-Origin' header is present on the requested resource.
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS#section_5
 
 possible work around to install on server
 http://benalman.com/projects/php-simple-proxy/
 */
-
 .factory('getYelp', function($http) {
 
 /*
@@ -119,7 +128,7 @@ http://benalman.com/projects/php-simple-proxy/
 		});
 	};
 
-*/
+
 
 	// Second method also returns 'Access-Control-Allow-Origin' error
 	return function(location, term) {
@@ -161,32 +170,29 @@ http://benalman.com/projects/php-simple-proxy/
 		//});
 	}	
 	
-/*
+*/
 	var businesses = [
 		{
 			name: "Pizza Hut", 
 			address: "1234 Johnson Ave.", 
 			rating: 4.5,
 			lat: 37.78930232286027,
-			lon: -122.40443229675292
+			lng: -122.40443229675292
 		},
 		{
 			name: "Tony's Pizza", 
 			address: "5959 Maple St.", 
 			rating: 5,
 			lat: 37.79594930209237,
-			lon: -122.43241310119629
+			lng: -122.43241310119629
 		},
 		{
 			name: "Luigi's", 
 			address: "2325 Broadway Ave.", 
 			rating: 3,
 			lat: 37.759315660088305,
-			lon: -122.43189811706542
+			lng: -122.43189811706542
 		}
 	];
 	return businesses;
-
-*/
-
 });
