@@ -27,7 +27,7 @@ var searchApp = angular.module('searchApp',['leaflet-directive'])
 	};
 
 
-	$scope.removeBiz = function(index, biz) {
+	$scope.removeBiz = function(index) {
 		delete $scope.markers[index];
 		$scope.businesses.splice(index, 1);
 		updateMarkers();		
@@ -39,9 +39,9 @@ var searchApp = angular.module('searchApp',['leaflet-directive'])
 	};
 
 	$scope.searchBiz = function() {
-		//Used for testing getYelp factory
-		//var searchLoc = 'san francisco';
-		//var searchTerm = 'pizza';
+
+		//var searchLoc = $scope.searchLocation;
+		//var searchTerm = $scope.searchInput;
 		//$scope.businesses = getYelp(searchLoc, searchTerm);
 
 		$scope.businesses = getYelp;
