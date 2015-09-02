@@ -1,0 +1,22 @@
+{
+  "name": "testproject01",
+  "version": "1.0.0",
+  "description": "testing angular skills by developing an app within a 48 hour timeframe",
+  "main": "nodeServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zvbsm/TestProject01.git"
+  },
+  "author": "Fernando Delgado",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zvbsm/TestProject01/issues"
+  },
+  "homepage": "https://github.com/zvbsm/TestProject01#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
