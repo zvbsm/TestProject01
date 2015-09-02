@@ -6,7 +6,7 @@ This project is a test of my coding abilities with AngularJS designing an app wi
 
 
 To view the app:<br>
-1- Go to https://github.com/zvbsm/TestProject01 and click "Clone repository to desktop" button on the right<br>
+1- Go to https://github.com/zvbsm/TestProject01 and click "Clone in Desktop" button on the right<br>
 2- Open terminal and change directory to TestProject01<br>
 3- Start local server by typing "node nodeserver" in terminal<br>
 4- In browser go to "localhost:8000/app/index.html"<br>
